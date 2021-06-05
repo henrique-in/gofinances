@@ -16,7 +16,7 @@ const icon = {
     total: 'dollar-sign'
 }
 
-export default function HighLightCard({title, amount, lastTransaction,type} : Props) {
+export  function HighLightCard({title, amount, lastTransaction,type} : Props) {
     return (
         <S.Container type={type}>
            <S.Header>

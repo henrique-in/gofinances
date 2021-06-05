@@ -1,13 +1,53 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-import HighLightCard from '../../components/HighLightCard'
-import TransactionCard from '../../components/TransactionCard'
+import {HighLightCard} from '../../components/HighLightCard'
+import {TransactionCard,TransactionCardProps} from '../../components/TransactionCard'
 
 
 
 import * as S from './styles'
 
+export interface DataListProps extends TransactionCardProps{
+    id: string;
+}
+
 export function Dashboard() {
+
+    const data: DataListProps[]= [{
+        id:'1',
+        type:'positive',
+        title:"Desenvolvimento",
+        amount:"R$ 12.000,00",
+        category:{
+            name:"Vendas",
+            icon:'dollar-sign'     
+        },
+         date:"13/03/21"
+    },
+    {
+        id:'2',
+        type:'negative',
+        title:"Bobs",
+        amount:"R$ 45,00",
+        category:{
+            name:"Alimentação",
+            icon:'coffee'     
+        },
+         date:"10/03/21"
+    },
+    {   
+        id:'3',
+        type:'negative',
+        title:"Aluguel",
+        amount:"R$ 900,00",
+        category:{
+            name:"Casa",
+            icon:'shopping-bag'     
+        },
+         date:"09/03/21"
+    }
+    ]
+
     return (
         <S.Container>
          <S.Header>
@@ -55,7 +95,13 @@ export function Dashboard() {
              <S.Title>
                  Listagem
              </S.Title>
-             <TransactionCard/>
+
+             <S.TransactionsList
+             data={data}
+             keyExtractor={item => item.id}
+             renderItem={({item})=> <TransactionCard data={item}/>}
+             />
+             
          </S.Transactions>
         
         </S.Container>
