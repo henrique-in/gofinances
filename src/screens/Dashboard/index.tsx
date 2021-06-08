@@ -3,8 +3,6 @@ import { View, Text, StyleSheet } from 'react-native'
 import {HighLightCard} from '../../components/HighLightCard'
 import {TransactionCard,TransactionCardProps} from '../../components/TransactionCard'
 
-
-
 import * as S from './styles'
 
 export interface DataListProps extends TransactionCardProps{
