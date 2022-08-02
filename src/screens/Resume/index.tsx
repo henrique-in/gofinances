@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RFValue } from 'react-native-responsive-fontsize';
+import {addMonths, format, subMonths} from 'date-fns'
+import {ptBR} from 'date-fns/locale'
 
+import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs'
 import {useTheme} from 'styled-components'
 
 import {VictoryPie} from 'victory-native'
@@ -34,9 +37,22 @@ interface CategoryData{
 
 export function Resume() {
 
+    const [selectedDate, setSelectedDate] = useState(new Date())
     const [totalByCategories, setTotalByCategories] = useState<CategoryData[]>([])
 
     const theme = useTheme()
+
+    function handleDateChange(action: 'next' | 'prev'){
+        if(action === 'next'){
+            
+            setSelectedDate(addMonths(selectedDate, 1))
+           
+        }else {
+            
+            setSelectedDate(subMonths(selectedDate, 1))
+    
+        }
+    }
 
     async function loadData() {
         const dataKey = '@gofinances:transactions';  
@@ -44,7 +60,13 @@ export function Resume() {
         const responseFormatted = response ? JSON.parse(response) : []
        
         const expensives = responseFormatted
-        .filter((expensive:TransactionData) => expensive.type === 'negative')
+        .filter((expensive:TransactionData) => 
+        expensive.type === 'negative' &&
+        new Date(expensive.date).getMonth() === selectedDate.getMonth() &&
+        new Date(expensive.date).getFullYear() === selectedDate.getFullYear() 
+
+        
+        )
 
 
         const expensivesTotal = expensives.reduce((accumulator:number, expensive: TransactionData) =>{
@@ -83,20 +105,39 @@ export function Resume() {
         }
         })
 
-        console.log(totalByCategory)
+        // console.log(totalByCategory)
         setTotalByCategories(totalByCategory)
     }
 
     useEffect(() => {
        loadData()
-    }, [])
+    }, [selectedDate])
     
     return (
         <S.Container>
             <S.Header><S.Title>Resumo por categoria</S.Title></S.Header>
 
-            <S.Content>
+            <S.Content
+             showsVerticalScrollIndicator={false} 
+             contentContainerStyle={{
+                paddingHorizontal:24,
+                paddingBottom:useBottomTabBarHeight(),
 
+             }}
+             >
+                <S.MonthSelect>
+                    <S.MonthSelectButton onPress={() => handleDateChange('prev')}>
+                        <S.MonthSelectIcon name="chevron-left"/>
+                    </S.MonthSelectButton>
+                    <S.Month>
+                        {format(selectedDate,'MMMM , yyyy',{locale:ptBR})}
+                    </S.Month>
+
+                    <S.MonthSelectButton onPress={() => handleDateChange('next')}>
+                        <S.MonthSelectIcon name="chevron-right"/>
+                    </S.MonthSelectButton>
+                </S.MonthSelect>
+              
               <S.ChartContainer>
                 <VictoryPie
                 data={totalByCategories}

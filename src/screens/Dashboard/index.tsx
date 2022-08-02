@@ -146,7 +146,7 @@ export function Dashboard() {
          <S.Header>
             <S.UserWrapper>
              <S.UserInfo>
-                 <S.Photo source={{uri:'https://avatars.githubusercontent.com/u/44737473?v=4'}}>
+                 <S.Photo source={require('./ricktoon.jpeg')}>
 
                  </S.Photo>
 

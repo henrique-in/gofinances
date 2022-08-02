@@ -85,7 +85,7 @@ export  function Register() {
             category:category.key,
             date: new Date()
         }
-        console.log(newTransaction)
+        // console.log(newTransaction)
 
         try {
           const data =  await AsyncStorage.getItem(dataKey);
