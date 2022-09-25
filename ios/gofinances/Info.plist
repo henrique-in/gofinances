@@ -55,5 +55,16 @@
 	<false/>
   <key>UIStatusBarStyle</key>
   <string>UIStatusBarStyleDefault</string>
+	<key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleURLName</key>
+            <string>https://auth.expo.io/@ricktoon/gofinances</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>gofinances</string>
+            </array>
+        </dict>
+    </array>
 </dict>
 </plist>
